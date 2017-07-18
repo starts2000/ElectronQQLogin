@@ -1,0 +1,12 @@
+{
+    "name": "electron-qqlogin",
+    "version": "1.0.0",
+    "description": "ElectronQQLogin",
+    "main": "app.js",
+    "author": {
+        "name": "Starts_2000"
+    },
+    "dependencies": {
+        "electron": "^1.6.11"
+    }
+}

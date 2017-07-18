@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html style="margin:0; padding:0;height:100%;">
+<head>
+    <meta charset="UTF-8">
+    <title>QQ Login</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            perspective: 800px;
+            -webkit-app-region: drag;
+            -webkit-user-select: none;
+        }
+
+        input[type="submit"],
+        input[type="reset"],
+        input[type="button"],
+        input[type="text"],
+        button,
+        textarea {
+            -webkit-app-region: no-drag;
+        }
+
+        .shadow {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        #login-back {
+            position: relative;
+            border-radius: 3px 3px 0 0;
+            left: 0;
+            right: 0;
+            height: 180px;
+        }
+
+        #card {
+            left: 33px;
+            top: 70px;
+            right: 33px;
+            bottom: 70px;
+            background-color: #ebf2f9;
+            position: absolute;
+            -webkit-transition: -webkit-transform .6s ease-in-out;
+            transition: transform .6s ease-in-out;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+            border-radius: 4px;
+        }
+
+            #card.flipped {
+                -webkit-transform: rotateY( 180deg );
+                transform: rotateY( 180deg );
+            }
+
+            #card .front {
+                background: url(imgs/login-back.gif) no-repeat;
+                background-size: 100% 180px;
+                position: absolute;
+                transform: rotateY(0deg);
+            }
+
+            #card .back {
+                position: absolute;
+                background: url(imgs/login-back.gif) no-repeat;
+                background-size: 100% 180px;
+                -webkit-transform: rotateY( -180deg );
+                transform: rotateY( -180deg );
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+                z-index:2;
+            } 
+
+        .sys-control-box {
+            float:right;
+            width:84px;
+            border-radius: 0 3px 0 0;
+        }
+
+        .sys-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            outline: none;
+            margin: 0;
+        }
+
+        .sys-btn-mini {
+            background: url(imgs/btn_mini_normal.png) no-repeat;
+        }
+
+            .sys-btn-mini:hover {
+                background: url(imgs/btn_mini_highlight.png) no-repeat;
+            }
+
+            .sys-btn-mini:active {
+                background: url(imgs/btn_mini_down.png) no-repeat;
+            }
+
+        .sys-btn-close {
+            border-radius: 0 3px 0 0;
+            background: url(imgs/btn_close_normal.png) no-repeat;
+        }
+
+            .sys-btn-close:hover {
+                background: url(imgs/btn_close_highlight.png) no-repeat;
+            }
+
+            .sys-btn-close:active {
+                background: url(imgs/btn_close_down.png) no-repeat;
+            }
+
+        .sys-btn-set {
+            background: url(imgs/btn_set_normal.png) 1px 0 no-repeat;
+        }
+
+            .sys-btn-set:hover {
+                background: url(imgs/btn_set_hover.png) 1px 0 no-repeat;
+            }
+
+            .sys-btn-set:active {
+                background: url(imgs/btn_set_press.png) 1px 0 no-repeat;
+            }
+
+        .btn {
+            width: 78px;
+            height: 28px;
+            background: url(imgs/setting_btn_normal.png) no-repeat;
+            background-size: 100% 100%;
+            border: none;
+            outline: none;
+            margin: 0;
+        }
+
+            .btn:hover, .btn:active {
+                background: url(imgs/setting_btn_hover.png) no-repeat;
+                background-size: 100% 100%;
+            }
+
+            .btn:focus {
+                background: url(imgs/setting_btn_hover.png) no-repeat;
+                background-size: 100% 100%;
+            }
+    </style>
+</head>
+<body>
+    <div id="card">
+        <div id="front" class="front shadow">
+            <div class="sys-control-box">
+                <button id="btn-set" class="sys-btn sys-btn-set" title="设置"></button><button class="sys-btn sys-btn-mini" title="最小化"></button><button class="sys-btn sys-btn-close" title="关闭"></button>
+            </div>
+        </div>
+        <div id="back" class="back shadow">
+            <div style="width:100%;height:100%; border-radius: 4px;background:-webkit-linear-gradient(top, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.00) 6%, #ebf2f9 12%, #ebf2f9 90%, #cde2f2 90%, #cde2f2 100%);">
+                <div class="sys-control-box" style="width:56px;">
+                    <button class="sys-btn sys-btn-mini" title="最小化"></button><button class="sys-btn sys-btn-close" title="关闭"></button>
+                </div>
+                <button id="btn-ok" style="position:absolute; right:91px; bottom:2px;" class="btn">确定</button>
+                <button id="btn-cancel" style="position:absolute; right:10px; bottom:2px;" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        Element.prototype.hasClassName = function (a) {
+            return new RegExp("(?:^|\\s+)" + a + "(?:\\s+|$)").test(this.className);
+        };
+
+        Element.prototype.addClassName = function (a) {
+            if (!this.hasClassName(a)) {
+                this.className = [this.className, a].join(" ");
+            }
+        };
+
+        Element.prototype.removeClassName = function (b) {
+            if (this.hasClassName(b)) {
+                var a = this.className;
+                this.className = a.replace(new RegExp("(?:^|\\s+)" + b + "(?:\\s+|$)", "g"), " ");
+            }
+        };
+
+        Element.prototype.toggleClassName = function (a) {
+            this[this.hasClassName(a) ? "removeClassName" : "addClassName"](a);
+        };
+
+        //var init = function () {
+        //    var card = document.getElementById('card');
+
+        //    document.getElementById('front').addEventListener('click', function () {
+        //        card.toggleClassName('flipped');
+        //    }, false);
+
+        //    document.getElementById('back').addEventListener('click', function () {
+        //        card.toggleClassName('flipped');
+        //    }, false);
+        //};
+
+        //window.addEventListener('DOMContentLoaded', init, false);
+        (function () {
+
+            const remote = require('electron').remote;
+
+            function init() {
+
+                function flip() {
+                    if (frontShow == 2) {
+                        document.getElementById('front').style.display = 'block';
+                    }
+                    else {
+                        document.getElementById('back').style.display = 'block';
+                    }
+                    card.toggleClassName('flipped');
+                };
+
+                var btn_minis = document.getElementsByClassName("sys-btn-mini");
+                for (var i = 0; i < btn_minis.length; i++) {
+                    btn_minis[i].addEventListener("click", function (e) {
+                        const window = remote.getCurrentWindow();
+                        window.minimize();
+                    });
+                }
+
+                //document.getElementById("sys-btn-maxi").addEventListener("click", function (e) {
+                //    const window = remote.getCurrentWindow();
+                //    if (!window.isMaximized()) {
+                //        window.maximize();
+                //    } else {
+                //        window.unmaximize();
+                //    }
+                //});
+
+                var btn_closes = document.getElementsByClassName("sys-btn-close");
+                for (var i = 0; i < btn_closes.length; i++) {
+                    btn_closes[i].addEventListener("click", function (e) {
+                        const window = remote.getCurrentWindow();
+                        window.close();
+                    });
+                }      
+
+                var card = document.getElementById('card');
+                var frontShow = 1;
+
+                var btn_sets = document.getElementsByClassName("sys-btn-set");
+                for (var i = 0; i < btn_sets.length; i++) {
+                    btn_sets[i].addEventListener('click', function () { flip(); }, false);
+                }  
+
+                card.addEventListener('transitionend', function () {
+                    if (frontShow == 1) {
+                        frontShow = 2;
+                        document.getElementById('front').style.display = 'none';
+                    }
+                    else {
+                        document.getElementById('back').style.display = 'none';
+                        frontShow = 1;
+                    }
+                }, false); 
+
+                document.getElementById('btn-ok').addEventListener('click', function () { flip(); }, false);
+                document.getElementById('btn-cancel').addEventListener('click', function () { flip(); }, false);
+            };
+
+            document.onreadystatechange = function () {
+                if (document.readyState == "complete") {
+                    init();
+                }
+            };
+        })();
+    </script>
+</body>
+</html>
