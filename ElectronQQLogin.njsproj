@@ -4,7 +4,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>ElectronQQLogin</Name>
     <RootNamespace>ElectronQQLogin</RootNamespace>
-    <NodeExePath>.\node_modules\electron\dist\electron.exe</NodeExePath>
+    <NodeExePath>C:\Users\Lenovo\Desktop\ElectronQQLogin\ElectronQQLogin\node_modules\electron\dist\electron.exe</NodeExePath>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -30,6 +30,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
+    <Compile Include="app\scripts\user32.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Content Include="app\imgs\BtnBackgroundNormal.png" />
     <Content Include="app\imgs\BtnBackgroundPushed.png" />
     <Content Include="app\imgs\btn_close_down.png" />
@@ -51,6 +54,7 @@
   <ItemGroup>
     <Folder Include="app\" />
     <Folder Include="app\imgs\" />
+    <Folder Include="app\scripts\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
