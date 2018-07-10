@@ -1,16 +1,16 @@
 {
-    "name": "electron-qqlogin",
-    "version": "1.0.0",
-    "description": "ElectronQQLogin",
-    "main": "app.js",
-    "author": {
-        "name": "Starts_2000"
-    },
-    "devDependencies": {
-        "electron-rebuild": "^1.5.11"
-    },
-    "dependencies": {
-        "electron": "^1.6.11",
-        "ffi": "^2.2.0"
-    }
+  "name": "electron-qqlogin",
+  "version": "1.0.0",
+  "description": "ElectronQQLogin",
+  "main": "app.js",
+  "author": {
+    "name": "Starts_2000"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.8.1"
+  },
+  "dependencies": {
+    "electron": "^2.0.4",
+    "ffi": "^2.2.0"
+  }
 }

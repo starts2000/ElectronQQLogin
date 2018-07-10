@@ -9,7 +9,7 @@ var tryCatch_1 = require('../../util/tryCatch');
 var errorObject_1 = require('../../util/errorObject');
 var Observable_1 = require('../../Observable');
 var Subscriber_1 = require('../../Subscriber');
-var map_1 = require('../../operator/map');
+var map_1 = require('../../operators/map');
 function getCORSRequest() {
     if (root_1.root.XMLHttpRequest) {
         return new root_1.root.XMLHttpRequest();
@@ -72,9 +72,14 @@ function ajaxPatch(url, body, headers) {
 }
 exports.ajaxPatch = ajaxPatch;
 ;
+var mapResponse = map_1.map(function (x, index) { return x.response; });
 function ajaxGetJSON(url, headers) {
-    return new AjaxObservable({ method: 'GET', url: url, responseType: 'json', headers: headers })
-        .lift(new map_1.MapOperator(function (x, index) { return x.response; }, null));
+    return mapResponse(new AjaxObservable({
+        method: 'GET',
+        url: url,
+        responseType: 'json',
+        headers: headers
+    }));
 }
 exports.ajaxGetJSON = ajaxGetJSON;
 ;
@@ -111,7 +116,7 @@ var AjaxObservable = (function (_super) {
         }
         this.request = request;
     }
-    AjaxObservable.prototype._subscribe = function (subscriber) {
+    /** @deprecated internal use only */ AjaxObservable.prototype._subscribe = function (subscriber) {
         return new AjaxSubscriber(subscriber, this.request);
     };
     /**
@@ -358,24 +363,7 @@ var AjaxResponse = (function () {
         this.request = request;
         this.status = xhr.status;
         this.responseType = xhr.responseType || request.responseType;
-        switch (this.responseType) {
-            case 'json':
-                if ('response' in xhr) {
-                    //IE does not support json as responseType, parse it internally
-                    this.response = xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
-                }
-                else {
-                    this.response = JSON.parse(xhr.responseText || 'null');
-                }
-                break;
-            case 'xml':
-                this.response = xhr.responseXML;
-                break;
-            case 'text':
-            default:
-                this.response = ('response' in xhr) ? xhr.response : xhr.responseText;
-                break;
-        }
+        this.response = parseXhrResponse(this.responseType, xhr);
     }
     return AjaxResponse;
 }());
@@ -395,10 +383,33 @@ var AjaxError = (function (_super) {
         this.xhr = xhr;
         this.request = request;
         this.status = xhr.status;
+        this.responseType = xhr.responseType || request.responseType;
+        this.response = parseXhrResponse(this.responseType, xhr);
     }
     return AjaxError;
 }(Error));
 exports.AjaxError = AjaxError;
+function parseXhrResponse(responseType, xhr) {
+    switch (responseType) {
+        case 'json':
+            if ('response' in xhr) {
+                //IE does not support json as responseType, parse it internally
+                return xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
+            }
+            else {
+                // HACK(benlesh): TypeScript shennanigans
+                // tslint:disable-next-line:no-any latest TS seems to think xhr is "never" here.
+                return JSON.parse(xhr.responseText || 'null');
+            }
+        case 'xml':
+            return xhr.responseXML;
+        case 'text':
+        default:
+            // HACK(benlesh): TypeScript shennanigans
+            // tslint:disable-next-line:no-any latest TS seems to think xhr is "never" here.
+            return ('response' in xhr) ? xhr.response : xhr.responseText;
+    }
+}
 /**
  * @see {@link ajax}
  *

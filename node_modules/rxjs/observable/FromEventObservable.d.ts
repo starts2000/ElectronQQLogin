@@ -1,9 +1,10 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 export declare type NodeStyleEventEmitter = {
-    addListener: (eventName: string, handler: Function) => void;
-    removeListener: (eventName: string, handler: Function) => void;
+    addListener: (eventName: string, handler: NodeEventHandler) => void;
+    removeListener: (eventName: string, handler: NodeEventHandler) => void;
 };
+export declare type NodeEventHandler = (...args: any[]) => void;
 export declare type JQueryStyleEventEmitter = {
     on: (eventName: string, handler: Function) => void;
     off: (eventName: string, handler: Function) => void;
@@ -31,5 +32,5 @@ export declare class FromEventObservable<T> extends Observable<T> {
     static create<T>(target: EventTargetLike, eventName: string, options: EventListenerOptions, selector: SelectorMethodSignature<T>): Observable<T>;
     constructor(sourceObj: EventTargetLike, eventName: string, selector?: SelectorMethodSignature<T>, options?: EventListenerOptions);
     private static setupSubscription<T>(sourceObj, eventName, handler, subscriber, options?);
-    protected _subscribe(subscriber: Subscriber<T>): void;
+    /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): void;
 }

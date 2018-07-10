@@ -23,8 +23,13 @@ function createWindow() {
 
     win.once('ready-to-show', () => {
         let hwnd = win.getNativeWindowHandle()
-        user32.GetSystemMenu(hwnd.readUInt32LE(0), true);
+        user32.GetSystemMenu(hwnd.readUInt32LE(0), true)
         win.show()
+    })
+
+    mainWin.once('ready-to-show', () => {
+        mainWin.maximize()
+        mainWin.show()
     })
 
     // and load the index.html of the app.
@@ -44,7 +49,7 @@ function createWindow() {
         // when you should delete the corresponding element.
         win = null
 
-        mainWin.show();
+        mainWin.loadURL("http://www.baidu.com");
     })
 }
 

@@ -1,1 +1,4 @@
 C:\Users\Lenovo\Desktop\ElectronQQLogin\ElectronQQLogin\bin\Microsoft.NodejsTools.WebRole.dll
+G:\GitHub\ElectronQQLogin\ElectronQQLogin\obj\Debug\ElectronQQLogin.njsproj.CoreCompileInputs.cache
+G:\GitHub\ElectronQQLogin\ElectronQQLogin\bin\Microsoft.NodejsTools.WebRole.dll
+G:\GitHub\ElectronQQLogin\ElectronQQLogin\obj\Debug\ElectronQQLogin.njsprojAssemblyReference.cache

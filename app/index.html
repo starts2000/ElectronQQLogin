@@ -82,7 +82,7 @@
         .sys-control-box {
             float:right;
             width:84px;
-            border-radius: 0 3px 0 0;
+            border-radius: 0 4px 0 0;
         }
 
         .sys-btn {
@@ -106,7 +106,7 @@
             }
 
         .sys-btn-close {
-            border-radius: 0 3px 0 0;
+            border-radius: 0 4px 0 0;
             background: url(imgs/btn_close_normal.png) no-repeat;
         }
 
@@ -202,11 +202,10 @@
         //    }, false);
         //};
 
-        //window.addEventListener('DOMContentLoaded', init, false);
         (function () {
 
             const remote = require('electron').remote;
-            var user32 = remote.require('./app/scripts/user32').user32;
+            //var user32 = remote.require('./app/scripts/user32').user32;
 
             function init() {
 
