@@ -3,7 +3,6 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
-const user32 = require('./app/scripts/user32').User32
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -22,8 +21,6 @@ function createWindow() {
     })
 
     win.once('ready-to-show', () => {
-        let hwnd = win.getNativeWindowHandle()
-        user32.GetSystemMenu(hwnd.readUInt32LE(0), true)
         win.show()
     })
 
