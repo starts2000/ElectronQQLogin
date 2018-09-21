@@ -48,6 +48,17 @@ function createWindow() {
 
         mainWin.loadURL("http://www.baidu.com");
     })
+    //hookWindowMessage 可以拦截窗口消息
+    //int WM_INITMENU = 0x116; //当一个下拉菜单或子菜单将要被激活时发送此消息，它允许程序在它显示前更改菜单，而不要改变全部
+    win.hookWindowMessage(278, function(){
+    win.blur();//可忽略
+    win.focus();//可忽略
+    win.setEnabled(false);//窗口禁用
+    setTimeout(() => {
+      win.setEnabled(true);//窗口启用
+    }, 100);//延时太快会立刻启用，太慢会妨碍窗口其他操作，可自行测试最佳时间
+    return true;
+  })
 }
 
 //app.disableHardwareAcceleration();
