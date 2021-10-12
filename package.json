@@ -10,7 +10,7 @@
     "electron-rebuild": "^1.8.1"
   },
   "dependencies": {
-    "electron": "^2.0.4",
+    "electron": "^11.5.0",
     "ffi": "^2.2.0"
   }
 }
